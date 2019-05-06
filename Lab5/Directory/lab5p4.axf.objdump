@@ -1,0 +1,231 @@
+
+W:/Verilog/ECE243/Lab5/Directory/lab5p4.axf:     file format elf32-littlearm
+
+
+Disassembly of section .text:
+
+00000000 <__cs3_interrupt_vector>:
+//R5 reset for edge key flags
+//R4 address of the timer
+//R0 and R1 reserved for functions
+
+			
+			ldr r12, =0xFF20005C //r12 holds the address of keys 0-3
+   0:	e59fc144 	ldr	r12, [pc, #324]	; 14c <DISPLAY+0x78>
+            mov r5, #255
+   4:	e3a050ff 	mov	r5, #255	; 0xff
+            strb r5, [r12]
+   8:	e5cc5000 	strb	r5, [r12]
+            ldr r4, =0xFFFEC600
+   c:	e59f413c 	ldr	r4, [pc, #316]	; 150 <DISPLAY+0x7c>
+            ldr r7, =2000000
+  10:	e59f713c 	ldr	r7, [pc, #316]	; 154 <DISPLAY+0x80>
+            str r7, [r4]
+  14:	e5847000 	str	r7, [r4]
+            mov r7, #0b011
+  18:	e3a07003 	mov	r7, #3
+			mov R8, #0		//counter value
+  1c:	e3a08000 	mov	r8, #0
+			mov r9, #0
+  20:	e3a09000 	mov	r9, #0
+            ldr r6, =6000
+  24:	e59f612c 	ldr	r6, [pc, #300]	; 158 <DISPLAY+0x84>
+			mov r5, #15
+  28:	e3a0500f 	mov	r5, #15
+			LDR r10, =0xFF200020	//r10 holds the address of HEX0 display
+  2c:	e59fa128 	ldr	r10, [pc, #296]	; 15c <DISPLAY+0x88>
+			b COUNT
+  30:	eaffffff 	b	34 <COUNT>
+
+00000034 <COUNT>:
+
+COUNT:		ldrb r11, [r12]		//load the last 4 bits to r11
+  34:	e5dcb000 	ldrb	r11, [r12]
+			cmp r11, r9			//if 0000, continue
+  38:	e15b0009 	cmp	r11, r9
+			bne STOP
+  3c:	1a00000f 	bne	80 <STOP>
+			
+            cmp r8, r6
+  40:	e1580006 	cmp	r8, r6
+            moveq r8, #0
+  44:	03a08000 	moveq	r8, #0
+            
+			add R8, #1
+  48:	e2888001 	add	r8, r8, #1
+            push {r0,r1,r2,r3}
+  4c:	e92d000f 	push	{r0, r1, r2, r3}
+			bl DO_DELAY
+  50:	eb000002 	bl	60 <DO_DELAY>
+            pop {r0,r1,r2,r3}
+  54:	e8bd000f 	pop	{r0, r1, r2, r3}
+		
+			bl DISPLAY
+  58:	eb00001d 	bl	d4 <DISPLAY>
+			
+            		
+			b COUNT		//if 0 display
+  5c:	eafffff4 	b	34 <COUNT>
+
+00000060 <DO_DELAY>:
+			
+DO_DELAY:	str r7, [r4, #8]  // Start counter
+  60:	e5847008 	str	r7, [r4, #8]
+
+00000064 <SUB_LOOP>:
+SUB_LOOP: 	LDR r0, [r4, #0xC]    //Flag when counter set to zero
+  64:	e594000c 	ldr	r0, [r4, #12]
+            cmp r0, #0
+  68:	e3500000 	cmp	r0, #0
+            beq SUB_LOOP
+  6c:	0afffffc 	beq	64 <SUB_LOOP>
+            str r0, [r4, #0xC]  //Reset the counter set to zero flag.
+  70:	e584000c 	str	r0, [r4, #12]
+			mov r0, #2
+  74:	e3a00002 	mov	r0, #2
+            str r0, [r4, #8]    //Stop counter
+  78:	e5840008 	str	r0, [r4, #8]
+			bx lr
+  7c:	e12fff1e 	bx	lr
+
+00000080 <STOP>:
+			
+STOP:		strb r5, [r12]
+  80:	e5cc5000 	strb	r5, [r12]
+			b WAIT
+  84:	eaffffff 	b	88 <WAIT>
+
+00000088 <WAIT>:
+            
+WAIT:		ldrb r11, [r12]
+  88:	e5dcb000 	ldrb	r11, [r12]
+			cmp r11, r9
+  8c:	e15b0009 	cmp	r11, r9
+            strneb r5, [r12]
+  90:	15cc5000 	strbne	r5, [r12]
+            bne COUNT
+  94:	1affffe6 	bne	34 <COUNT>
+            b WAIT
+  98:	eafffffa 	b	88 <WAIT>
+
+0000009c <DIVIDE>:
+
+
+/* Subroutine to perform the integer division R0 / R1.
+ * Returns: quotient in R1, and remainder in R0
+*/
+DIVIDE:     MOV    R2, #0
+  9c:	e3a02000 	mov	r2, #0
+
+000000a0 <CONT>:
+CONT:       CMP    R0, R1
+  a0:	e1500001 	cmp	r0, r1
+            BLT    DIV_END
+  a4:	ba000002 	blt	b4 <DIV_END>
+            SUB    R0, R1
+  a8:	e0400001 	sub	r0, r0, r1
+            ADD    R2, #1
+  ac:	e2822001 	add	r2, r2, #1
+            B      CONT
+  b0:	eafffffa 	b	a0 <CONT>
+
+000000b4 <DIV_END>:
+DIV_END:    MOV    R1, R2     // quotient in R1 (remainder in R0)
+  b4:	e1a01002 	mov	r1, r2
+            BX lr
+  b8:	e12fff1e 	bx	lr
+
+000000bc <SEG7_CODE>:
+		  
+SEG7_CODE:  MOV     R1, #BIT_CODES  
+  bc:	e3a010c8 	mov	r1, #200	; 0xc8
+            LDRB    R0, [R1, R0]    
+  c0:	e7d10000 	ldrb	r0, [r1, r0]
+            BX      LR
+  c4:	e12fff1e 	bx	lr
+
+000000c8 <BIT_CODES>:
+  c8:	4f5b063f 	.word	0x4f5b063f
+  cc:	077d6d66 	.word	0x077d6d66
+  d0:	0000677f 	.word	0x0000677f
+
+000000d4 <DISPLAY>:
+			
+
+
+/* Display R8 on HEX1-0 */
+//Stores R12 into the HEX0~3
+DISPLAY:    push {r0,r1,r2,r3}
+  d4:	e92d000f 	push	{r0, r1, r2, r3}
+			MOV R0, R8
+  d8:	e1a00008 	mov	r0, r8
+            MOV R1, #1000
+  dc:	e3a01ffa 	mov	r1, #1000	; 0x3e8
+            BL DIVIDE //We wanna display R1 and R0
+  e0:	ebffffed 	bl	9c <DIVIDE>
+            MOV R2, R0 //Store remainder R2
+  e4:	e1a02000 	mov	r2, r0
+            MOV R0, R1 // Move division result in R0
+  e8:	e1a00001 	mov	r0, r1
+			BL      SEG7_CODE  //Takes R0 number returns r0 as bit code for hex display
+  ec:	ebfffff2 	bl	bc <SEG7_CODE>
+            
+            mov r3, r0, LSL #24 //r3 holds all the bit codes
+  f0:	e1a03c00 	lsl	r3, r0, #24
+            
+            MOV r0, r2 //The remainder was in R2 now divide by 100
+  f4:	e1a00002 	mov	r0, r2
+            MOV R1, #100
+  f8:	e3a01064 	mov	r1, #100	; 0x64
+            BL DIVIDE //Takes r0/r1 returns r0 is remainder r1 is quotient
+  fc:	ebffffe6 	bl	9c <DIVIDE>
+
+            MOV R2, R0 //Store remainder R2
+ 100:	e1a02000 	mov	r2, r0
+            MOV R0, R1 // Move division result in R0
+ 104:	e1a00001 	mov	r0, r1
+			BL      SEG7_CODE  //Takes R0 number returns r0 as bit code for hex display
+ 108:	ebffffeb 	bl	bc <SEG7_CODE>
+            
+            mov r0, r0, LSL #16 //r3 holds all the bit codes
+ 10c:	e1a00800 	lsl	r0, r0, #16
+            ORR     r3, R0
+ 110:	e1833000 	orr	r3, r3, r0
+
+            MOV r0, r2 //The remainder was in R2 now divide by 100
+ 114:	e1a00002 	mov	r0, r2
+            MOV R1, #10
+ 118:	e3a0100a 	mov	r1, #10
+            BL DIVIDE //Takes r0/r1 returns r0 is remainder r1 is quotient
+ 11c:	ebffffde 	bl	9c <DIVIDE>
+
+            MOV R2, R0 //Store remainder R2
+ 120:	e1a02000 	mov	r2, r0
+            MOV R0, R1 // Move division result in R0
+ 124:	e1a00001 	mov	r0, r1
+			BL      SEG7_CODE  //Takes R0 number returns r0 as bit code for hex display
+ 128:	ebffffe3 	bl	bc <SEG7_CODE>
+            
+            mov r0, r0, LSL #8 //r3 holds all the bit codes
+ 12c:	e1a00400 	lsl	r0, r0, #8
+            ORR     r3, R0
+ 130:	e1833000 	orr	r3, r3, r0
+
+            mov r0, r2
+ 134:	e1a00002 	mov	r0, r2
+  			BL      SEG7_CODE  //Rn R0 is the bit code
+ 138:	ebffffdf 	bl	bc <SEG7_CODE>
+            ORR     r3, R0
+ 13c:	e1833000 	orr	r3, r3, r0
+	
+			STR     R3, [R10]
+ 140:	e58a3000 	str	r3, [r10]
+			pop {r0,r1,r2,r3}
+ 144:	e8bd000f 	pop	{r0, r1, r2, r3}
+			b COUNT
+ 148:	eaffffb9 	b	34 <COUNT>
+ 14c:	ff20005c 	.word	0xff20005c
+ 150:	fffec600 	.word	0xfffec600
+ 154:	001e8480 	.word	0x001e8480
+ 158:	00001770 	.word	0x00001770
+ 15c:	ff200020 	.word	0xff200020

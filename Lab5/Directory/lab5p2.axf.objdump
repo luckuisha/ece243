@@ -1,0 +1,163 @@
+
+W:/Verilog/ECE243/Lab5/Directory/lab5p2.axf:     file format elf32-littlearm
+
+
+Disassembly of section .text:
+
+00000000 <__cs3_interrupt_vector>:
+//R7 holds the delay counter
+//R6
+//R0 and R1 reserved for functions
+
+
+			ldr r12, =0xFF20005C //r12 holds the address of keys 0-3
+   0:	e59fc0cc 	ldr	r12, [pc, #204]	; d4 <DISPLAY+0x30>
+			mov R8, #0		//counter value
+   4:	e3a08000 	mov	r8, #0
+			mov r9, #0
+   8:	e3a09000 	mov	r9, #0
+            mov r6, #100
+   c:	e3a06064 	mov	r6, #100	; 0x64
+			mov r5, #15
+  10:	e3a0500f 	mov	r5, #15
+			LDR r10, =0xFF200020	//r10 holds the address of HEX0 display
+  14:	e59fa0bc 	ldr	r10, [pc, #188]	; d8 <DISPLAY+0x34>
+			b COUNT
+  18:	eaffffff 	b	1c <COUNT>
+
+0000001c <COUNT>:
+
+COUNT:		ldrb r11, [r12]		//load the last 4 bits to r11
+  1c:	e5dcb000 	ldrb	r11, [r12]
+			cmp r11, r9			//if 0000, continue
+  20:	e15b0009 	cmp	r11, r9
+			bne STOP
+  24:	1a000009 	bne	50 <STOP>
+			
+            cmp r8, r6
+  28:	e1580006 	cmp	r8, r6
+            moveq r8, #0
+  2c:	03a08000 	moveq	r8, #0
+            
+			add R8, #1
+  30:	e2888001 	add	r8, r8, #1
+			bl DO_DELAY
+  34:	eb000001 	bl	40 <DO_DELAY>
+			
+			b DISPLAY
+  38:	ea000019 	b	a4 <DISPLAY>
+
+			
+			beq COUNT		//if 0 display
+  3c:	0afffff6 	beq	1c <COUNT>
+
+00000040 <DO_DELAY>:
+			
+DO_DELAY:	LDR R7, =200000000 // delay counter
+  40:	e59f7094 	ldr	r7, [pc, #148]	; dc <DISPLAY+0x38>
+
+00000044 <SUB_LOOP>:
+SUB_LOOP: 	SUBS R7, R7, #1
+  44:	e2577001 	subs	r7, r7, #1
+			BNE SUB_LOOP
+  48:	1afffffd 	bne	44 <SUB_LOOP>
+			bx lr
+  4c:	e12fff1e 	bx	lr
+
+00000050 <STOP>:
+			
+STOP:		strb r5, [r12]
+  50:	e5cc5000 	strb	r5, [r12]
+			b WAIT
+  54:	eaffffff 	b	58 <WAIT>
+
+00000058 <WAIT>:
+            
+WAIT:		ldrb r11, [r12]
+  58:	e5dcb000 	ldrb	r11, [r12]
+			cmp r11, r9
+  5c:	e15b0009 	cmp	r11, r9
+            strneb r5, [r12]
+  60:	15cc5000 	strbne	r5, [r12]
+            bne COUNT
+  64:	1affffec 	bne	1c <COUNT>
+            b WAIT
+  68:	eafffffa 	b	58 <WAIT>
+
+0000006c <DIVIDE>:
+
+
+/* Subroutine to perform the integer division R0 / R1.
+ * Returns: quotient in R1, and remainder in R0
+*/
+DIVIDE:     MOV    R2, #0
+  6c:	e3a02000 	mov	r2, #0
+
+00000070 <CONT>:
+CONT:       CMP    R0, R1
+  70:	e1500001 	cmp	r0, r1
+            BLT    DIV_END
+  74:	ba000002 	blt	84 <DIV_END>
+            SUB    R0, R1
+  78:	e0400001 	sub	r0, r0, r1
+            ADD    R2, #1
+  7c:	e2822001 	add	r2, r2, #1
+            B      CONT
+  80:	eafffffa 	b	70 <CONT>
+
+00000084 <DIV_END>:
+DIV_END:    MOV    R1, R2     // quotient in R1 (remainder in R0)
+  84:	e1a01002 	mov	r1, r2
+            BX lr
+  88:	e12fff1e 	bx	lr
+
+0000008c <SEG7_CODE>:
+		  
+SEG7_CODE:  MOV     R1, #BIT_CODES  
+  8c:	e3a01098 	mov	r1, #152	; 0x98
+            LDRB    R0, [R1, R0]    
+  90:	e7d10000 	ldrb	r0, [r1, r0]
+            BX      LR
+  94:	e12fff1e 	bx	lr
+
+00000098 <BIT_CODES>:
+  98:	4f5b063f 	.word	0x4f5b063f
+  9c:	077d6d66 	.word	0x077d6d66
+  a0:	0000677f 	.word	0x0000677f
+
+000000a4 <DISPLAY>:
+
+
+/* Display R8 on HEX1-0 */
+//Stores R12 into the HEX0~3
+DISPLAY:    
+			MOV R0, R8
+  a4:	e1a00008 	mov	r0, r8
+            MOV R1, #10
+  a8:	e3a0100a 	mov	r1, #10
+            BL DIVIDE //We wanna display R1 and R0
+  ac:	ebffffee 	bl	6c <DIVIDE>
+            MOV R2, R0
+  b0:	e1a02000 	mov	r2, r0
+            MOV R0, R1
+  b4:	e1a00001 	mov	r0, r1
+			BL      SEG7_CODE  //Rn R0 is the bit code
+  b8:	ebfffff3 	bl	8c <SEG7_CODE>
+            
+            mov r3, r0, LSL #8
+  bc:	e1a03400 	lsl	r3, r0, #8
+            
+            MOV r0, r2
+  c0:	e1a00002 	mov	r0, r2
+  			BL      SEG7_CODE  //Rn R0 is the bit code
+  c4:	ebfffff0 	bl	8c <SEG7_CODE>
+        
+			ORR     r3, R0		
+  c8:	e1833000 	orr	r3, r3, r0
+			STR     R3, [R10]
+  cc:	e58a3000 	str	r3, [r10]
+			b COUNT
+  d0:	eaffffd1 	b	1c <COUNT>
+  d4:	ff20005c 	.word	0xff20005c
+  d8:	ff200020 	.word	0xff200020
+  dc:	0bebc200 	.word	0x0bebc200
