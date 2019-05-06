@@ -1,0 +1,280 @@
+WIDTH = 16;
+DEPTH = 512;
+ADDRESS_RADIX = HEX;
+DATA_RADIX = HEX;
+
+CONTENT
+BEGIN
+0		: 0070;		% mvi  r6, 0x00ff %
+1		: 00ff;
+2		: 0048;		% mvi  r1, 0x0001 %
+3		: 0001;
+4		: 002f;		% mv   r5, r7 %
+5		: 0078;		% mvi  r7, 0x00ec %
+6		: 00ec;
+7		: 0040;		% mvi  r0, 0x0000 %
+8		: 0000;
+9		: 002f;		% mv   r5, r7 %
+a		: 0078;		% mvi  r7, 0x003a %
+b		: 003a;
+c		: 002f;		% mv   r5, r7 %
+d		: 0078;		% mvi  r7, 0x001b %
+e		: 001b;
+f		: 002f;		% mv   r5, r7 %
+10		: 0078;		% mvi  r7, 0x0015 %
+11		: 0015;
+12		: 002f;		% mv   r5, r7 %
+13		: 0078;		% mvi  r7, 0x0021 %
+14		: 0021;
+15		: 0058;		% mvi  r3, 0x3000 %
+16		: 3000;
+17		: 0123;		% ld   r4, r3 %
+18		: 00a9;		% add  r5, r1 %
+19		: 00a9;		% add  r5, r1 %
+1a		: 003d;		% mv   r7, r5 %
+1b		: 0058;		% mvi  r3, 0x1000 %
+1c		: 1000;
+1d		: 0143;		% st   r0, r3 %
+1e		: 00a9;		% add  r5, r1 %
+1f		: 00a9;		% add  r5, r1 %
+20		: 003d;		% mv   r7, r5 %
+21		: 00f1;		% sub  r6, r1 %
+22		: 0156;		% st   r2, r6 %
+23		: 00f1;		% sub  r6, r1 %
+24		: 015e;		% st   r3, r6 %
+25		: 00f1;		% sub  r6, r1 %
+26		: 016e;		% st   r5, r6 %
+27		: 0058;		% mvi  r3, 0x22b8 %
+28		: 22b8;
+29		: 0050;		% mvi  r2, 0xc350 %
+2a		: c350;
+2b		: 002f;		% mv   r5, r7 %
+2c		: 009a;		% add  r3, r2 %
+2d		: 00e1;		% sub  r4, r1 %
+2e		: 01fd;		% mvnc r7, r5 %
+2f		: 002f;		% mv   r5, r7 %
+30		: 00d9;		% sub  r3, r1 %
+31		: 01fd;		% mvnc r7, r5 %
+32		: 012e;		% ld   r5, r6 %
+33		: 00b1;		% add  r6, r1 %
+34		: 011e;		% ld   r3, r6 %
+35		: 00b1;		% add  r6, r1 %
+36		: 0116;		% ld   r2, r6 %
+37		: 00b1;		% add  r6, r1 %
+38		: 0078;		% mvi  r7, 0x0009 %
+39		: 0009;
+3a		: 0081;		% add  r0, r1 %
+3b		: 0078;		% mvi  r7, 0x003d %
+3c		: 003d;
+3d		: 00f1;		% sub  r6, r1 %
+3e		: 0156;		% st   r2, r6 %
+3f		: 00f1;		% sub  r6, r1 %
+40		: 015e;		% st   r3, r6 %
+41		: 00f1;		% sub  r6, r1 %
+42		: 0166;		% st   r4, r6 %
+43		: 00f1;		% sub  r6, r1 %
+44		: 016e;		% st   r5, r6 %
+45		: 00f1;		% sub  r6, r1 %
+46		: 014e;		% st   r1, r6 %
+47		: 0010;		% mv   r2, r0 %
+48		: 0060;		% mvi  r4, 0x0000 %
+49		: 0000;
+4a		: 002f;		% mv   r5, r7 %
+4b		: 00a1;		% add  r4, r1 %
+4c		: 0058;		% mvi  r3, 0x2710 %
+4d		: 2710;
+4e		: 00d3;		% sub  r2, r3 %
+4f		: 01fd;		% mvnc r7, r5 %
+50		: 0093;		% add  r2, r3 %
+51		: 00e1;		% sub  r4, r1 %
+52		: 0068;		% mvi  r5, 0x0073 %
+53		: 0073;
+54		: 0068;		% mvi  r5, 0x0004 %
+55		: 0004;
+56		: 0024;		% mv   r4, r4 %
+57		: 01bd;		% mvnz r7, r5 %
+58		: 0078;		% mvi  r7, 0x005a %
+59		: 005a;
+5a		: 0060;		% mvi  r4, 0x0000 %
+5b		: 0000;
+5c		: 002f;		% mv   r5, r7 %
+5d		: 00a1;		% add  r4, r1 %
+5e		: 0058;		% mvi  r3, 0x03e8 %
+5f		: 03e8;
+60		: 00d3;		% sub  r2, r3 %
+61		: 01fd;		% mvnc r7, r5 %
+62		: 0093;		% add  r2, r3 %
+63		: 00e1;		% sub  r4, r1 %
+64		: 0078;		% mvi  r7, 0x0066 %
+65		: 0066;
+66		: 0058;		% mvi  r3, 0x0073 %
+67		: 0073;
+68		: 0024;		% mv   r4, r4 %
+69		: 01bb;		% mvnz r7, r3 %
+6a		: 012e;		% ld   r5, r6 %
+6b		: 0058;		% mvi  r3, 0x009f %
+6c		: 009f;
+6d		: 002d;		% mv   r5, r5 %
+6e		: 01bb;		% mvnz r7, r3 %
+6f		: 0068;		% mvi  r5, 0x0003 %
+70		: 0003;
+71		: 0078;		% mvi  r7, 0x0073 %
+72		: 0073;
+73		: 00f1;		% sub  r6, r1 %
+74		: 016e;		% st   r5, r6 %
+75		: 0058;		% mvi  r3, 0x0106 %
+76		: 0106;
+77		: 002f;		% mv   r5, r7 %
+78		: 0099;		% add  r3, r1 %
+79		: 00e1;		% sub  r4, r1 %
+7a		: 01ef;		% mvnc r5, r7 %
+7b		: 00a1;		% add  r4, r1 %
+7c		: 00d9;		% sub  r3, r1 %
+7d		: 012e;		% ld   r5, r6 %
+7e		: 00b1;		% add  r6, r1 %
+7f		: 00f1;		% sub  r6, r1 %
+80		: 0156;		% st   r2, r6 %
+81		: 0050;		% mvi  r2, 0x2000 %
+82		: 2000;
+83		: 0095;		% add  r2, r5 %
+84		: 015a;		% st   r3, r2 %
+85		: 0116;		% ld   r2, r6 %
+86		: 00b1;		% add  r6, r1 %
+87		: 0166;		% st   r4, r6 %
+88		: 0058;		% mvi  r3, 0x005a %
+89		: 005a;
+8a		: 0060;		% mvi  r4, 0x0004 %
+8b		: 0004;
+8c		: 00ec;		% sub  r5, r4 %
+8d		: 01fb;		% mvnc r7, r3 %
+8e		: 0058;		% mvi  r3, 0x009f %
+8f		: 009f;
+90		: 0060;		% mvi  r4, 0x0003 %
+91		: 0003;
+92		: 00ec;		% sub  r5, r4 %
+93		: 01fb;		% mvnc r7, r3 %
+94		: 0058;		% mvi  r3, 0x00ba %
+95		: 00ba;
+96		: 0060;		% mvi  r4, 0x0002 %
+97		: 0002;
+98		: 00ec;		% sub  r5, r4 %
+99		: 01fb;		% mvnc r7, r3 %
+9a		: 0022;		% mv   r4, r2 %
+9b		: 0068;		% mvi  r5, 0x0000 %
+9c		: 0000;
+9d		: 0078;		% mvi  r7, 0x0073 %
+9e		: 0073;
+9f		: 0060;		% mvi  r4, 0x0000 %
+a0		: 0000;
+a1		: 002f;		% mv   r5, r7 %
+a2		: 00a1;		% add  r4, r1 %
+a3		: 0058;		% mvi  r3, 0x0064 %
+a4		: 0064;
+a5		: 00d3;		% sub  r2, r3 %
+a6		: 01fd;		% mvnc r7, r5 %
+a7		: 0093;		% add  r2, r3 %
+a8		: 00e1;		% sub  r4, r1 %
+a9		: 0078;		% mvi  r7, 0x00ab %
+aa		: 00ab;
+ab		: 0058;		% mvi  r3, 0x0073 %
+ac		: 0073;
+ad		: 0068;		% mvi  r5, 0x0002 %
+ae		: 0002;
+af		: 0024;		% mv   r4, r4 %
+b0		: 01bb;		% mvnz r7, r3 %
+b1		: 012e;		% ld   r5, r6 %
+b2		: 0058;		% mvi  r3, 0x00ba %
+b3		: 00ba;
+b4		: 002d;		% mv   r5, r5 %
+b5		: 01bb;		% mvnz r7, r3 %
+b6		: 0068;		% mvi  r5, 0x0002 %
+b7		: 0002;
+b8		: 0078;		% mvi  r7, 0x0073 %
+b9		: 0073;
+ba		: 0060;		% mvi  r4, 0x0000 %
+bb		: 0000;
+bc		: 002f;		% mv   r5, r7 %
+bd		: 00a1;		% add  r4, r1 %
+be		: 0058;		% mvi  r3, 0x000a %
+bf		: 000a;
+c0		: 00d3;		% sub  r2, r3 %
+c1		: 01fd;		% mvnc r7, r5 %
+c2		: 0093;		% add  r2, r3 %
+c3		: 00e1;		% sub  r4, r1 %
+c4		: 0078;		% mvi  r7, 0x00c6 %
+c5		: 00c6;
+c6		: 0058;		% mvi  r3, 0x0073 %
+c7		: 0073;
+c8		: 0068;		% mvi  r5, 0x0001 %
+c9		: 0001;
+ca		: 0024;		% mv   r4, r4 %
+cb		: 01bb;		% mvnz r7, r3 %
+cc		: 012e;		% ld   r5, r6 %
+cd		: 0058;		% mvi  r3, 0x00d5 %
+ce		: 00d5;
+cf		: 002d;		% mv   r5, r5 %
+d0		: 01bb;		% mvnz r7, r3 %
+d1		: 0068;		% mvi  r5, 0x0001 %
+d2		: 0001;
+d3		: 0078;		% mvi  r7, 0x0073 %
+d4		: 0073;
+d5		: 0058;		% mvi  r3, 0x0106 %
+d6		: 0106;
+d7		: 002f;		% mv   r5, r7 %
+d8		: 0099;		% add  r3, r1 %
+d9		: 00d1;		% sub  r2, r1 %
+da		: 01ef;		% mvnc r5, r7 %
+db		: 0091;		% add  r2, r1 %
+dc		: 00d9;		% sub  r3, r1 %
+dd		: 0050;		% mvi  r2, 0x2000 %
+de		: 2000;
+df		: 015a;		% st   r3, r2 %
+e0		: 00b1;		% add  r6, r1 %
+e1		: 012e;		% ld   r5, r6 %
+e2		: 00b1;		% add  r6, r1 %
+e3		: 0126;		% ld   r4, r6 %
+e4		: 00b1;		% add  r6, r1 %
+e5		: 011e;		% ld   r3, r6 %
+e6		: 00b1;		% add  r6, r1 %
+e7		: 0116;		% ld   r2, r6 %
+e8		: 00b1;		% add  r6, r1 %
+e9		: 00a9;		% add  r5, r1 %
+ea		: 00a9;		% add  r5, r1 %
+eb		: 003d;		% mv   r7, r5 %
+ec		: 00f1;		% sub  r6, r1 %
+ed		: 0146;		% st   r0, r6 %
+ee		: 00f1;		% sub  r6, r1 %
+ef		: 0156;		% st   r2, r6 %
+f0		: 0040;		% mvi  r0, 0x0000 %
+f1		: 0000;
+f2		: 0050;		% mvi  r2, 0x2000 %
+f3		: 2000;
+f4		: 0142;		% st   r0, r2 %
+f5		: 0091;		% add  r2, r1 %
+f6		: 0142;		% st   r0, r2 %
+f7		: 0091;		% add  r2, r1 %
+f8		: 0142;		% st   r0, r2 %
+f9		: 0091;		% add  r2, r1 %
+fa		: 0142;		% st   r0, r2 %
+fb		: 0091;		% add  r2, r1 %
+fc		: 0142;		% st   r0, r2 %
+fd		: 0091;		% add  r2, r1 %
+fe		: 0142;		% st   r0, r2 %
+ff		: 0116;		% ld   r2, r6 %
+100		: 00b1;		% add  r6, r1 %
+101		: 0106;		% ld   r0, r6 %
+102		: 00b1;		% add  r6, r1 %
+103		: 00a9;		% add  r5, r1 %
+104		: 00a9;		% add  r5, r1 %
+105		: 003d;		% mv   r7, r5 %
+106		: 003f;		% data %
+107		: 0006;		% data %
+108		: 005b;		% data %
+109		: 004f;		% data %
+10a		: 0066;		% data %
+10b		: 006d;		% data %
+10c		: 007d;		% data %
+10d		: 0007;		% data %
+10e		: 007f;		% data %
+10f		: 0067;		% data %
+END;
